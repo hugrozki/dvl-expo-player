@@ -1,12 +1,14 @@
 import { NavigationContainer } from "@react-navigation/native";
+import { ThemeProvider } from "@rneui/themed";
 
-import { PlaylistsScreen } from "./src/screens/PlaylistsScreen/PlaylistsScreen";
 import { MainNavigation } from "./src/navigation/MainNavigation";
 
 export default function App() {
   return (
     <NavigationContainer>
-      <MainNavigation />
+      <ThemeProvider>
+        <MainNavigation />
+      </ThemeProvider>
     </NavigationContainer>
   );
 }

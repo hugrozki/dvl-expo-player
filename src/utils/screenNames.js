@@ -12,11 +12,23 @@ const playlist = {
     title: "Editar lista de reproducción",
   },
   playlist: {
-    name: "Playlist",
+    name: "PlaylistDetail",
     title: "Lista de reproducción",
+  },
+  player: {
+    name: "Player",
+    title: "Reproductor",
+  },
+};
+
+const favorites = {
+  favorites: {
+    name: "Favorites",
+    title: "Canales favoritos",
   },
 };
 
 export const screens = {
   playlist,
+  favorites,
 };

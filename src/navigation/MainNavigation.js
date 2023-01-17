@@ -1,37 +1,49 @@
-import { TouchableHighlight } from "react-native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Icon } from "@rneui/themed";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { Icon, useTheme } from "@rneui/themed";
 
-import { PlaylistsScreen } from "../screens/PlaylistsScreen/PlaylistsScreen";
-import { AddPlaylistScreen } from "../screens/AddPlaylistScreen/AddPlaylistScreen";
+import { PlaylistNavigation } from "./PlaylistNavigation";
+import { FavoritesScreen } from "../screens/FavoritesScreen/FavoritesScreen";
 import { screens } from "../utils/screenNames";
-import { HeaderButton } from "../components/shared";
 
-const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 export function MainNavigation() {
+  const { theme } = useTheme();
   return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name={screens.playlist.playlists.name}
-        component={PlaylistsScreen}
-        options={({ navigation }) => ({
-          title: screens.playlist.playlists.title,
-          headerRight: () => (
-            <HeaderButton
-              iconName="plus-thick"
-              screenName={screens.playlist.addPlaylist.name}
-            />
-          ),
-        })}
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ color, size }) => tabBarIcon(route, color, size),
+        headerStyle: {
+          backgroundColor: theme.colors.primary,
+        },
+        headerTintColor: theme.colors.white,
+        headerBackTitleVisible: false,
+      })}
+    >
+      <Tab.Screen
+        name={screens.playlist.playlists.title}
+        component={PlaylistNavigation}
+        options={{ headerShown: false }}
       />
-      <Stack.Screen
-        name={screens.playlist.addPlaylist.name}
-        component={AddPlaylistScreen}
-        options={{
-          title: screens.playlist.addPlaylist.title,
-        }}
+      <Tab.Screen
+        name={screens.favorites.favorites.title}
+        component={FavoritesScreen}
       />
-    </Stack.Navigator>
+    </Tab.Navigator>
+  );
+}
+
+function tabBarIcon(route, color, size) {
+  return (
+    <Icon
+      type="material-community"
+      name={
+        route.name === screens.playlist.playlists.title
+          ? "playlist-play"
+          : "heart"
+      }
+      color={color}
+      size={size}
+    />
   );
 }
