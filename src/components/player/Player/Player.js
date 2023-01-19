@@ -1,6 +1,7 @@
 import React from "react";
-import { Video, AVPlaybackStatus } from "expo-av";
-import { View, Button } from "react-native";
+import { Video } from "expo-av";
+import { View } from "react-native";
+import Toast from "react-native-root-toast";
 
 import { styles } from "./Player.styles";
 
@@ -19,7 +20,9 @@ export function Player({ url }) {
         isLooping
         onPlaybackStatusUpdate={(status) => setStatus(() => status)}
         onError={(error) => {
-          console.log(error);
+          Toast.show(`Error al reproducir el canal: ${error}`, {
+            duration: Toast.durations.LONG,
+          });
         }}
       />
     </View>

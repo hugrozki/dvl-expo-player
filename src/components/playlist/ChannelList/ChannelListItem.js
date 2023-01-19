@@ -1,28 +1,54 @@
 import React from "react";
-import { ListItem, Avatar } from "@rneui/themed";
+import { ListItem, Avatar, useTheme } from "@rneui/themed";
+import { useNavigation } from "@react-navigation/native";
 
 import { screens } from "../../../utils/screenNames";
 
-export function ChannelListItem({ item, navigation }) {
+const ChannelListItem = React.memo(function ChannelListItem({
+  id,
+  name,
+  url,
+  group,
+  logo,
+}) {
+  const navigation = useNavigation();
+  const { theme } = useTheme();
   const gotoPlayer = () => {
-    navigation.navigate(screens.playlist.player.name, item);
+    navigation.navigate(screens.playlist.player.name, {
+      id,
+      name,
+      url,
+      group,
+      logo,
+    });
   };
 
   return (
-    <ListItem key={item.id} onPress={gotoPlayer} bottomDivider>
-      <Avatar
-        size={64}
-        rounded
-        source={{ uri: item.logo }}
-        imageProps={{
-          resizeMode: "contain",
-        }}
-      />
+    <ListItem onPress={gotoPlayer} bottomDivider>
+      {logo ? (
+        <Avatar
+          size={64}
+          rounded
+          source={{ uri: logo }}
+          imageProps={{
+            resizeMode: "contain",
+          }}
+        />
+      ) : (
+        <Avatar
+          size={64}
+          rounded
+          title="A"
+          containerStyle={{ backgroundColor: theme.colors.greyOutline }}
+        />
+      )}
       <ListItem.Content>
-        <ListItem.Title>{item.name}</ListItem.Title>
-        <ListItem.Subtitle>{item.group}</ListItem.Subtitle>
+        <ListItem.Title>{name}</ListItem.Title>
+        <ListItem.Subtitle>{group}</ListItem.Subtitle>
       </ListItem.Content>
       <ListItem.Chevron />
     </ListItem>
   );
-}
+});
+
+export default ChannelListItem;

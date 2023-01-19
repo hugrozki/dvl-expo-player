@@ -1,13 +1,17 @@
 import { useState, useEffect } from "react";
-import { View, FlatList } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { View, FlatList, VirtualizedList } from "react-native";
 import { SearchBar, useTheme } from "@rneui/themed";
 
-import { ChannelListItem } from "./ChannelListItem";
+import ChannelListItem from "./ChannelListItem";
+
+const getItemCount = (_data) => _data.length;
+
+const getItem = (_data, index) => {
+  return _data[index];
+};
 
 export function ChannelList({ dataset }) {
   const { theme } = useTheme();
-  const navigation = useNavigation();
   const [search, setSearch] = useState("");
   const [datalist, setDatalist] = useState([]);
 
@@ -34,10 +38,21 @@ export function ChannelList({ dataset }) {
         containerStyle={{ backgroundColor: theme.colors.white }}
         inputContainerStyle={{ backgroundColor: theme.colors.white }}
       />
-      <FlatList
+      <VirtualizedList
         data={datalist}
+        initialNumToRender={20}
+        maxToRenderPerBatch={50}
+        keyExtractor={(item) => item.id}
+        getItemCount={getItemCount}
+        getItem={getItem}
         renderItem={({ item }) => (
-          <ChannelListItem item={item} navigation={navigation} />
+          <ChannelListItem
+            id={item.id}
+            name={item.name}
+            url={item.url}
+            group={item.group}
+            logo={item.logo}
+          />
         )}
       />
     </View>

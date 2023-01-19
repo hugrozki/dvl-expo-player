@@ -1,33 +1,26 @@
-import React from "react";
+import { useState, useEffect } from "react";
 
+import { channelsFromUrl } from "../../services/playlist-service";
 import { NoContentView } from "../../components/shared";
 import { ChannelList } from "../../components/playlist";
 
-const DATA = [
-  {
-    id: 1,
-    name: "ADN 40 (480p)",
-    url: "https://mdstrm.com/live-stream-playlist/60b578b060947317de7b57ac.m3u8",
-    group: "News",
-    logo: "https://i.imgur.com/Og17U9N.png",
-    favoriteId: 1,
-  },
-  {
-    id: 2,
-    name: "Baby TV (480p)",
-    url: "http://okkotv-live.cdnvideo.ru/channel/BabyTV.m3u8",
-    group: "Kids",
-    logo: "https://i.imgur.com/fvVovnc.png",
-    favoriteId: null,
-  },
-];
-
-export function PlaylistDetailScreen({ route, navigation }) {
+export function PlaylistDetailScreen({ route }) {
   const { itemUrl } = route.params;
-  console.log("PlaylistDetailScreen itemUrl", itemUrl);
+  const [channels, setChannels] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  if (DATA.length === 0)
+  useEffect(() => {
+    (async () => {
+      const response = await channelsFromUrl(itemUrl);
+      setChannels(response);
+      setLoading(false);
+    })();
+  }, [itemUrl]);
+
+  if (loading) return <NoContentView text="Cargando..." />;
+
+  if (channels.length === 0)
     return <NoContentView text="No se encontraron canales." />;
 
-  return <ChannelList dataset={DATA} />;
+  return <ChannelList dataset={channels} />;
 }

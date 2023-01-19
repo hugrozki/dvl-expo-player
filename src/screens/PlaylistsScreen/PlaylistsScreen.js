@@ -1,68 +1,45 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import { FlatList } from "react-native";
-import { ListItem } from "@rneui/themed";
+import Toast from "react-native-root-toast";
 
-import {
-  SwipeableListItem,
-  DeleteItemButton,
-  NoContentView,
-} from "../../components/shared";
-import { screens } from "../../utils/screenNames";
+import { NoContentView } from "../../components/shared";
+import { getPlaylists } from "../../services/database";
+import { PlaylistItem } from "./PlaylistItem";
 
-const DATA = [
-  {
-    id: 1,
-    name: "México",
-    url: "https://iptv-org.github.io/iptv/countries/mx.m3u",
-    numChannels: 2,
-  },
-  {
-    id: 2,
-    name: "Inglés",
-    url: "https://iptv-org.github.io/iptv/languages/eng.m3u",
-    numChannels: 2,
-  },
-];
+export function PlaylistsScreen({ route, navigation }) {
+  const [playlists, setPlaylists] = useState([]);
+  const playlistId = route.params?.itemId;
 
-const PlayListItem = ({ item, navigation }) => {
-  const deleteItem = (reset) => {
-    console.log("Delete item", item);
-    reset();
+  useEffect(() => {
+    (async () => {
+      const response = await getPlaylists();
+
+      if (!response.success) {
+        Toast.show(`${response.errorMessage}: ${response.error}`, {
+          duration: Toast.durations.LONG,
+        });
+      } else {
+        setPlaylists(response.data);
+      }
+    })();
+  }, [playlistId]);
+
+  const onDelete = (id) => {
+    const itemIndex = playlists.findIndex((item) => item.id === id);
+    const tmp = playlists.slice();
+
+    tmp.splice(itemIndex, 1);
+    setPlaylists(tmp);
   };
 
-  const gotoPlaylist = () => {
-    navigation.navigate(screens.playlist.playlist.name, {
-      itemName: item.name,
-      itemUrl: item.url,
-    });
-  };
-
-  return (
-    <SwipeableListItem
-      itemId={item.id}
-      onPress={gotoPlaylist}
-      rightContent={(reset) => (
-        <DeleteItemButton onPress={() => deleteItem(reset)} />
-      )}
-    >
-      <ListItem.Content>
-        <ListItem.Title>{item.name}</ListItem.Title>
-        <ListItem.Subtitle>{item.numChannels} Canales</ListItem.Subtitle>
-      </ListItem.Content>
-      <ListItem.Chevron />
-    </SwipeableListItem>
-  );
-};
-
-export function PlaylistsScreen({ navigation }) {
-  if (DATA.length === 0)
+  if (playlists.length === 0)
     return <NoContentView text="No hay listas de reproducción." />;
 
   return (
     <FlatList
-      data={DATA}
+      data={playlists}
       renderItem={({ item }) => (
-        <PlayListItem item={item} navigation={navigation} />
+        <PlaylistItem item={item} navigation={navigation} onDelete={onDelete} />
       )}
     />
   );
