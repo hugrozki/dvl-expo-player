@@ -1,15 +1,15 @@
 {
   "expo": {
-    "name": "DvlExpoPlayer",
-    "slug": "DvlExpoPlayer",
-    "version": "1.0.0",
+    "name": "Dvl Player",
+    "slug": "dvl-player",
+    "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000000"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -23,11 +23,17 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
+        "backgroundColor": "#000000"
+      },
+      "package": "mx.hugoacosta.dvlplayer"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "f2583b7a-a526-451d-af03-41cb21caf9b9"
+      }
     }
   }
 }

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { View } from "react-native";
-import { Input, Button } from "@rneui/themed";
+import { Input, Button, useTheme } from "@rneui/themed";
 import { useFormik } from "formik";
 import Toast from "react-native-root-toast";
 
@@ -11,6 +11,7 @@ import { addPlaylist } from "../../services/database";
 
 export function AddPlaylistScreen({ navigation }) {
   const [loading, setLoading] = useState(false);
+  const { theme } = useTheme();
 
   const formik = useFormik({
     initialValues: initialValues,
@@ -51,6 +52,8 @@ export function AddPlaylistScreen({ navigation }) {
         title="Guardar"
         type="outline"
         style={styles.button}
+        titleStyle={{ color: theme.colors.grey2 }}
+        buttonStyle={{ borderColor: theme.colors.grey2 }}
         onPress={formik.handleSubmit}
         loading={loading}
       />

@@ -14,10 +14,11 @@ export function MainNavigation() {
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color, size }) => tabBarIcon(route, color, size),
         headerStyle: {
-          backgroundColor: theme.colors.primary,
+          backgroundColor: theme.colors.black,
         },
         headerTintColor: theme.colors.white,
         headerBackTitleVisible: false,
+        tabBarActiveTintColor: theme.colors.grey0,
       })}
     >
       <Tab.Screen

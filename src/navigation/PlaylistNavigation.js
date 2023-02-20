@@ -18,7 +18,7 @@ export function PlaylistNavigation() {
     <Stack.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: theme.colors.primary,
+          backgroundColor: theme.colors.black,
         },
         headerTintColor: theme.colors.white,
         headerBackTitleVisible: false,

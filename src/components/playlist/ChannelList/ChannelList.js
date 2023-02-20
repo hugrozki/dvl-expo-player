@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { View, FlatList, VirtualizedList } from "react-native";
+import { View, VirtualizedList } from "react-native";
 import { SearchBar, useTheme } from "@rneui/themed";
 
 import ChannelListItem from "./ChannelListItem";
@@ -39,6 +39,7 @@ export function ChannelList({ dataset }) {
         inputContainerStyle={{ backgroundColor: theme.colors.white }}
       />
       <VirtualizedList
+        style={{ marginBottom: 70 }}
         data={datalist}
         initialNumToRender={20}
         maxToRenderPerBatch={50}
